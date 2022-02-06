@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_camerawesome/utils/camera_view_singleton.dart';
+import 'package:flutter_single_pose/utils/camera_view_singleton.dart';
 
 /// Represents the recognition output from the model
 class Recognition {

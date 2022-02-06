@@ -3,8 +3,8 @@ import 'dart:isolate';
 
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as imageLib;
-import 'package:flutter_camerawesome/tflite/classifier.dart';
-import 'package:flutter_camerawesome/utils/imageUtils.dart';
+import 'package:flutter_single_pose/tflite/classifier.dart';
+import 'package:flutter_single_pose/utils/imageUtils.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 /// Manages separate Isolate instance for inference

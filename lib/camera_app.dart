@@ -5,10 +5,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter_camerawesome/tflite/classifier.dart';
-import 'package:flutter_camerawesome/tflite/recognition.dart';
-import 'package:flutter_camerawesome/utils/camera_view_singleton.dart';
-import 'package:flutter_camerawesome/utils/isolate_utils.dart';
+import 'package:flutter_single_pose/tflite/classifier.dart';
+import 'package:flutter_single_pose/tflite/recognition.dart';
+import 'package:flutter_single_pose/utils/camera_view_singleton.dart';
+import 'package:flutter_single_pose/utils/isolate_utils.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -37,6 +37,8 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
+
+    initStateAsync();
     // 1
     availableCameras().then((availableCameras) {
       cameras = availableCameras;
@@ -54,8 +56,6 @@ class _CameraScreenState extends State<CameraScreen> {
       // 3
       print('Error: $err.code\nError Message: $err.message');
     });
-
-    initStateAsync();
   }
 
   @override
@@ -121,6 +121,10 @@ class _CameraScreenState extends State<CameraScreen> {
 
   /// Callback to receive each frame [CameraImage] perform inference on it
   onLatestImageAvailable(CameraImage cameraImage) async {
+    print("******************* Width: ${cameraImage.width} ***************");
+    print("******************* Height: ${cameraImage.height} ***************");
+    print(
+        "******************* controller size: ${controller!.value.previewSize} ***************");
     if (classifier.interpreter != null) {
       // If previous inference has not completed then return
       if (_predicting) {
@@ -133,7 +137,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
       var uiThreadTimeStart = DateTime.now().millisecondsSinceEpoch;
 
-      // Data to be passed to inference isolate
+      // Data to be passed to inference  isolate
       var isolateData =
           IsolateData(cameraImage, classifier.interpreter.address);
 
@@ -189,32 +193,34 @@ class _CameraScreenState extends State<CameraScreen> {
     if (controller != null &&
         controller!.value.isInitialized &&
         controller!.value.aspectRatio != null) {
+      final size = MediaQuery.of(context).size;
       final sizeAr = MediaQuery.of(context).size.aspectRatio;
       final scale = 1 / (controller!.value.aspectRatio * sizeAr);
-      return Column(
-        children: [
-          Stack(
-            children: [
-              Transform.scale(
-                scale: scale,
-                alignment: Alignment.topCenter,
-                child: Stack(
-                  children: [
-                    CameraPreview(controller!),
-                    Container(
-                        child: _recognitions.isNotEmpty
+      return Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                CameraPreview(controller!,
+                    child: AspectRatio(
+                      aspectRatio: controller!.value.aspectRatio,
+                      child: Container(
+                        child: true //_recognitions.isNotEmpty
                             ? CustomPaint(
-                                painter:
-                                    PointPainter(recognitions: _recognitions),
+                                painter: PointPainter(
+                                  recognitions: [],
+                                  scale: 1,
+                                ),
                               )
-                            : null),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          _cameraTogglesRowWidget()
-        ],
+                            : null,
+                      ),
+                    )),
+              ],
+            ),
+            _cameraTogglesRowWidget()
+          ],
+        ),
       );
     }
     return Center(child: CircularProgressIndicator());
@@ -262,22 +268,25 @@ class _CameraScreenState extends State<CameraScreen> {
 }
 
 class PointPainter extends CustomPainter {
-  PointPainter({required List recognitions}) {
+  PointPainter({required List recognitions, required double scale}) {
     for (Recognition elm in recognitions) {
-      points.add(elm.location);
+      Offset off = elm.location;
+      points.add(off * scale);
     }
   }
 
+  double scale = 1.0;
   List<Offset> points = [
-    Offset(0, 0),
-    Offset(2, 2),
-    Offset(4, 4),
-    Offset(64, 64),
-    Offset(128, 128),
+    // Offset(0, 0),
+    // Offset(2, 2),
+    // Offset(4, 4),
+    // Offset(64, 64),
+    // Offset(128, 128),
     // Offset(256, 256),
     // Offset(512, 512),
     // Offset(,),
-    // Offset(,),
+    Offset(350, 100),
+    // Offset(410, 850),
   ];
 
   @override
