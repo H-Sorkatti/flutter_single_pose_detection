@@ -5,12 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+<<<<<<< HEAD
             "name": "flutter_single_pose",
+=======
+            "name": "flutter_camerawesome",
+>>>>>>> f208d547e79eb04dd0d68ca673307718f0153fe7
             "request": "launch",
             "type": "dart"
         },
         {
+<<<<<<< HEAD
             "name": "flutter_single_pose (profile mode)",
+=======
+            "name": "flutter_camerawesome (profile mode)",
+>>>>>>> f208d547e79eb04dd0d68ca673307718f0153fe7
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
