@@ -1,6 +1,6 @@
 {
-    "name": "flutter_camerawesome",
-    "short_name": "flutter_camerawesome",
+    "name": "flutter_single_pose",
+    "short_name": "flutter_single_pose",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

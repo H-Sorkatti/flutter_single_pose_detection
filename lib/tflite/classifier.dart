@@ -2,9 +2,9 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_camerawesome/tflite/recognition.dart';
-import 'package:flutter_camerawesome/tflite/stats.dart';
-import 'package:flutter_camerawesome/utils/camera_view_singleton.dart';
+import 'package:flutter_single_pose/tflite/recognition.dart';
+import 'package:flutter_single_pose/tflite/stats.dart';
+import 'package:flutter_single_pose/utils/camera_view_singleton.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/tflite_flutter_helper.dart';
 import 'package:image/image.dart' as imageLib;
@@ -68,17 +68,6 @@ class Classifier {
             options: InterpreterOptions()..useNnApiForAndroid = true,
             // ..threads = 4,
           );
-
-      //   var outputTensors = _interpreter.getOutputTensors();
-      //   _outputShapes = [];
-      //   _outputTypes = [];
-      //   print('#############################################################');
-      //   print(_interpreter.getOutputTensors());
-      //   print('#############################################################');
-      //   for (Tensor tensor in outputTensors) {
-      //     _outputShapes.add(tensor.shape);
-      //     _outputTypes.add(tensor.type);
-      //   }
     } catch (e) {
       print("Error while creating interpreter: $e");
     }
@@ -161,10 +150,9 @@ class Classifier {
 
       // var cam = CameraViewSingleton.inputImageSize;
 
-      Point tmp = Point(x * image.width, y * image.height);
+      Offset temp = Offset(x * image.width, y * image.height);
 
-      Recognition recognition =
-          Recognition(label, Offset(tmp.x.toDouble(), tmp.y.toDouble()), score);
+      Recognition recognition = Recognition(label, temp, score);
 
       recognitions.add(recognition);
     }

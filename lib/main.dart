@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_camerawesome/camera_app.dart';
-import 'package:flutter_camerawesome/camera_awesome.dart';
+import 'package:flutter_single_pose/camera_app.dart';
 import 'package:camera/camera.dart';
 
 late List<CameraDescription> cameras;
